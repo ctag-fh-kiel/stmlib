@@ -71,8 +71,10 @@ class ResourceEntry(object):
     else:
       comment = ''
       size = len(self._value)
+    f.write('#undef %(prefix)s_%(key)s\n' % locals())
     f.write('#define %(prefix)s_%(key)s %(index)d%(comment)s\n' % locals())
     if not size is None:
+      f.write('#undef %(prefix)s_%(key)s_SIZE\n' % locals())
       f.write('#define %(prefix)s_%(key)s_SIZE %(size)d\n' % locals())
   
   def Compile(self, f):
