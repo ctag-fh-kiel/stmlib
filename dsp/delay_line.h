@@ -31,6 +31,7 @@
 
 #include "stmlib/stmlib.h"
 #include "stmlib/dsp/dsp.h"
+#include <esp_heap_caps.h>
 
 #include <algorithm>
 
@@ -39,8 +40,12 @@ namespace stmlib {
 template<typename T, size_t max_delay>
 class DelayLine {
  public:
-  DelayLine() { }
-  ~DelayLine() { }
+  DelayLine() {
+      line_ = (T*)heap_caps_malloc_prefer(max_delay * sizeof(T), MALLOC_CAP_8BIT | MALLOC_CAP_INTERNAL, MALLOC_CAP_SPIRAM);
+  }
+  ~DelayLine() {
+      heap_caps_free(line_);
+  }
   
   void Init() {
     Reset();
@@ -107,8 +112,9 @@ class DelayLine {
  private:
   size_t write_ptr_;
   size_t delay_;
-  T line_[max_delay];
-  
+  //T line_[max_delay];
+  T *line_;
+
   DISALLOW_COPY_AND_ASSIGN(DelayLine);
 };
 
