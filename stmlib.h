@@ -75,11 +75,11 @@ namespace impl {
 } // namespace impl
 
 
-#ifndef TEST
+#ifndef MUTABLE_STD_CPP
 #define IN_RAM __attribute__ ((section (".ramtext")))
 #else
 #define IN_RAM
-#endif  // TEST
+#endif  // MUTABLE_STD_CPP
 
 #define UNROLL2(x) x; x;
 #define UNROLL4(x) x; x; x; x;
